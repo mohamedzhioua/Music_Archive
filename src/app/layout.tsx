@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import ThemeContextProvider from "@/context/ThemeContext";
+import ThemeSwitch from "@/components/theme-switch";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +18,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeContextProvider>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+            <ThemeSwitch />
+            {children}
+          </ThemeRegistry>
         </ThemeContextProvider>
       </body>
     </html>
