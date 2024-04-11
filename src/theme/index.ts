@@ -51,8 +51,7 @@ export const getDesignTokens = (mode: Mode) => {
               default: "#0E1320",
               paper: neutral[900],
             },
-            divider: "#2D3748",
-
+            divider: "#F2F4F7",
             neutral,
             primary: {
               main: "#FFFFFF",
@@ -77,7 +76,7 @@ export const getDesignTokens = (mode: Mode) => {
               default: neutral[50],
               paper: common.white,
             },
-            divider: "#F2F4F7",
+            divider: "#2D3748",
             neutral,
             primary: {
               main: "#000000",
@@ -118,13 +117,13 @@ export const getDesignTokens = (mode: Mode) => {
             },
             [`&.${outlinedInputClasses.focused}`]: {
               [`& .${outlinedInputClasses.notchedOutline}`]: {
-                borderColor: '#fff7ed',
+                borderColor: "#fff7ed",
                 boxShadow: `#fff7ed 0 0 0 2px`,
               },
             },
             [`&.${filledInputClasses.error}`]: {
               [`& .${outlinedInputClasses.notchedOutline}`]: {
-                borderColor: '#F04438',
+                borderColor: "#F04438",
                 boxShadow: `#F04438 0 0 0 2px`,
               },
             },
