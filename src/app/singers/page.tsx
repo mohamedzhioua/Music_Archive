@@ -22,7 +22,7 @@ const SingersListPage = () => {
               variant={"h1"}
               sx={{ fontWeight: "bold", letterSpacing: "0.15px !important" }}
             >
-              {`Singers `}
+              {`Singers List`}
               {/* (${singers?.length}) */}
             </Typography>
             <Typography

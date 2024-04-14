@@ -9,7 +9,7 @@ export type Song = {
 
 const songSchema = new mongoose.Schema(
   {
-    user: {
+    singer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Singer",
       required: true,

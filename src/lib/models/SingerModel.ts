@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export type Singer = {
+  stockReference: string;
   name: string;
   country: string;
   songs: mongoose.Schema.Types.ObjectId[];
@@ -8,6 +9,11 @@ export type Singer = {
 
 const singerSchema = new mongoose.Schema(
   {
+    stockReference: {
+      type: String,
+      unique: true,  
+      required: true,
+    },
     name: {
       type: String,
       required: true,

@@ -4,15 +4,15 @@ import { Button, ButtonProps } from "@mui/material";
 interface CustomButtonProps extends ButtonProps {
   variant?: "contained" | "outlined";
   target?: string;
-}
+ }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
   variant = "contained",
   children,
-  ...props
+   ...props
 }) => {
   return (
-    <Button variant={variant} {...props}>
+    <Button style={{ fontWeight: "bold" }} variant={variant} {...props}>
       {children}
     </Button>
   );
