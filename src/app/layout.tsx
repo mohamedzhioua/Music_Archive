@@ -3,6 +3,7 @@ import "./globals.css";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import ThemeContextProvider from "@/context/ThemeContext";
 import ThemeSwitch from "@/components/theme-switch";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <ThemeContextProvider>
           <ThemeRegistry>
             <ThemeSwitch />
+            <Toaster/>
             {children}
           </ThemeRegistry>
         </ThemeContextProvider>

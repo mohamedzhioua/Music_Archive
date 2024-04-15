@@ -117,7 +117,7 @@ const SingersListTable = (props: any) => {
                         </TableCell>
                         <TableCell>
                           <Typography color="text.primary">
-                          {item.songs.slice(0, 4).map((song: any) => song.name).join(", ")}
+                          {item.songs.slice(0, 4).map((song: any) => song.songName).join(", ")}
                         {item.songs.length > 4 && " ..."}                            </Typography>
                         </TableCell>
                         <TableCell align="right">

@@ -18,8 +18,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import toast from "react-hot-toast";
-import {  useRouter } from "next/navigation";
- 
+import { useRouter } from "next/navigation";
+
 interface Song {
   songName: string;
   releaseDate: string;
@@ -32,7 +32,7 @@ const AddSingerForm = () => {
   const [name, setName] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [songs, setSongs] = useState<Song[]>([
-    { songName: "", releaseDate: "", duration: "0", cassetteNumber: "0" },
+    { songName: "", releaseDate: "", duration: "", cassetteNumber: "" },
   ]);
   const router = useRouter();
 
@@ -74,26 +74,29 @@ const AddSingerForm = () => {
       country,
       songs,
     };
- 
-    const savingPromise: Promise<void> = new Promise(async (resolve, reject) => {
-      const response = await fetch("/api/singers", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.ok) resolve();
-      else reject();
-    });
-    
-    console.log("🚀 ~ constsavingPromise:Promise<void>=newPromise ~ response:", response)
+
+    const savingPromise: Promise<void> = new Promise(
+      async (resolve, reject) => {
+        const response = await fetch("/api/singers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (response.ok) resolve();
+        else {
+          const errorData = await response.json();
+          reject(errorData.message || "something went wrong.");
+        }
+      }
+    );
     await toast.promise(savingPromise, {
       loading: "Saving the singer information",
       success: "Saved",
-      error: "Error",
+      error: (error) => `Error: ${error}`,
     });
-    
-    router.push('/singers')    
-  }
+
+    router.push("/singers");
+  };
 
   return (
     <Card>
@@ -286,17 +289,25 @@ const AddSingerForm = () => {
               </CustomButton>
             </div>
           </Grid>
+ 
           <CustomButton
             variant="contained"
             type="submit"
-            // disabled={isSubmitting}
             size="large"
-            sx={{ mt: 4 }}
-          >
+            sx={{ mt: 4 , mr: 2 }}
+            >
             Create
-            {/* {isSubmitting ? "loading..." : initialData ? "Save changes" : "Create"} */}
           </CustomButton>
-        </form>
+          <CustomButton
+            onClick={() => router.push(`/singers`)}
+            variant="contained"
+            size="large"
+            color="error"
+            sx={{ mt: 4 }}
+            >
+            Cancel
+          </CustomButton>
+         </form>
       </CardContent>
     </Card>
   );

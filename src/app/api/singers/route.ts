@@ -1,14 +1,13 @@
 import { NextRequest } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import SingerModel from "@/lib/models/SingerModel";
-import SongModel from "@/lib/models/SongModel";
+import SongModel, { Song } from "@/lib/models/SongModel";
 
 export async function POST(req: NextRequest) {
   try {
     await dbConnect();
     const body = await req.json();
-    console.log("🚀 ~ POST ~ body:", body)
-
+ 
     const { stockReference, name, country, songs } = body;
  
     // Check if the request body is empty
@@ -18,12 +17,19 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+  // Check if the songs array is empty or if any song object is incomplete
+  if (songs.some((song: Song)=> !song.songName! || !song.releaseDate || !song.duration || !song.cassetteNumber)) {
+    return Response.json(
+      { message: "Please provide all required fields for songs." },
+      { status: 400 }
+    );
+  }
 
     // Check if the name already exists
     const existingSinger = await SingerModel.findOne({ name });
      if (existingSinger) {
       return Response.json(
-        { message: "Singer name already exists." },
+        { message: "Singer already exists." },
         { status: 400 }
       );
     }
@@ -32,7 +38,7 @@ export async function POST(req: NextRequest) {
    for (const songData of songs) {
      const { songName, releaseDate, duration, cassetteNumber } = songData;
      const newSong = await SongModel.create({
-       name: songName,
+       songName,
        releaseDate,
        duration,
        cassetteNumber,

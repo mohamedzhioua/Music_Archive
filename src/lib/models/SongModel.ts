@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export type Song = {
-  name: string;
+  songName: string;
   releaseDate: Date;
   duration: number;
   cassetteNumber: number;
@@ -9,7 +9,7 @@ export type Song = {
 
 const songSchema = new mongoose.Schema(
   {
-    name: {
+    songName: {
       type: String,
       required: true,
     },

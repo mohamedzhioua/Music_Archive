@@ -7,8 +7,10 @@ import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
 import { Singer } from "@/lib/models/SingerModel";
+import { useRouter } from "next/navigation";
 
 const SingersListPage = () => {
+  const router = useRouter();
   const [singers, setSingers] = useState<Singer[]>([]);
   useEffect(() => {
     fetchSingers();
@@ -36,7 +38,7 @@ const SingersListPage = () => {
               sx={{ fontWeight: "bold", letterSpacing: "0.15px !important" }}
             >
               {`Singers List`}
-              (${singers?.length})
+            `(${singers?.length})`  
             </Typography>
             <Typography
               variant="h5"
@@ -45,7 +47,7 @@ const SingersListPage = () => {
               {`Manage singers from Here`}
             </Typography>
           </Stack>
-          <CustomButton component={Link} href="/singers/add">
+          <CustomButton onClick={() => router.push(`/singers/add`)}>
             <AddIcon sx={{ marginRight: 1, height: "1rem", width: "1rem" }} />{" "}
             Add New
           </CustomButton>
