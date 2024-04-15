@@ -4,16 +4,11 @@ export type Song = {
   name: string;
   releaseDate: Date;
   duration: number;
-  cassetteNumber: string;
+  cassetteNumber: number;
 };
 
 const songSchema = new mongoose.Schema(
   {
-    singer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Singer",
-      required: true,
-    },
     name: {
       type: String,
       required: true,
@@ -27,7 +22,7 @@ const songSchema = new mongoose.Schema(
       required: true,
     },
     cassetteNumber: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

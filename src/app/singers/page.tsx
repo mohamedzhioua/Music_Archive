@@ -1,10 +1,23 @@
+"use client";
+
 import SingersListTable from "@/components/singers/SingersListTable";
 import CustomButton from "@/components/ui/custom-button";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
+import { useEffect, useState } from "react";
+import { Singer } from "@/lib/models/SingerModel";
 
 const SingersListPage = () => {
+  const [singers, setSingers] = useState<Singer[]>([]);
+  useEffect(() => {
+    fetchSingers();
+  }, []);
+  async function fetchSingers() {
+    const res = await fetch("/api/singers");
+    const singers = await res.json();
+    setSingers(singers);
+  }
   return (
     <>
       <Container maxWidth="xl" sx={{ marginBottom: "14px" }}>
@@ -23,7 +36,7 @@ const SingersListPage = () => {
               sx={{ fontWeight: "bold", letterSpacing: "0.15px !important" }}
             >
               {`Singers List`}
-              {/* (${singers?.length}) */}
+              (${singers?.length})
             </Typography>
             <Typography
               variant="h5"
@@ -33,7 +46,8 @@ const SingersListPage = () => {
             </Typography>
           </Stack>
           <CustomButton component={Link} href="/singers/add">
-          <AddIcon sx={{ marginRight: 1, height: '1rem', width: '1rem' }} /> Add New
+            <AddIcon sx={{ marginRight: 1, height: "1rem", width: "1rem" }} />{" "}
+            Add New
           </CustomButton>
         </Box>
         <Divider
@@ -43,7 +57,7 @@ const SingersListPage = () => {
             marginRight: "1rem",
           }}
         />
-        <SingersListTable />
+        <SingersListTable singers={singers} />
       </Container>
     </>
   );

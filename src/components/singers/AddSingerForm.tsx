@@ -17,7 +17,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-
+import toast from "react-hot-toast";
+import {  useRouter } from "next/navigation";
+ 
 interface Song {
   songName: string;
   releaseDate: string;
@@ -27,13 +29,14 @@ interface Song {
 
 const AddSingerForm = () => {
   const [stockReference, setStockReference] = useState<string>("");
-  const [singerName, setSingerName] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [songs, setSongs] = useState<Song[]>([
     { songName: "", releaseDate: "", duration: "0", cassetteNumber: "0" },
   ]);
-  
-   const handleSongChange = (
+  const router = useRouter();
+
+  const handleSongChange = (
     index: number,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -63,10 +66,39 @@ const AddSingerForm = () => {
     }
   };
 
+  const handleFormSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const formData = {
+      stockReference,
+      name,
+      country,
+      songs,
+    };
+ 
+    const savingPromise: Promise<void> = new Promise(async (resolve, reject) => {
+      const response = await fetch("/api/singers", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) resolve();
+      else reject();
+    });
+    
+    console.log("🚀 ~ constsavingPromise:Promise<void>=newPromise ~ response:", response)
+    await toast.promise(savingPromise, {
+      loading: "Saving the singer information",
+      success: "Saved",
+      error: "Error",
+    });
+    
+    router.push('/singers')    
+  }
+
   return (
     <Card>
       <CardContent>
-        <form noValidate>
+        <form onSubmit={handleFormSubmit} noValidate>
           <Typography
             variant="h3"
             sx={{ fontWeight: "bold", marginLeft: "1rem" }}
@@ -92,8 +124,8 @@ const AddSingerForm = () => {
                 label="Singer Name"
                 placeholder="Singer Name"
                 type="text"
-                value={singerName}
-                onChange={(event) => setSingerName(event.target.value)}
+                value={name}
+                onChange={(event) => setName(event.target.value)}
               />
             </Grid>
 
@@ -173,20 +205,26 @@ const AddSingerForm = () => {
                           label="Release Date"
                           sx={{ width: "100%" }}
                           format="DD/MM/YYYY"
-                          value={song.releaseDate ? dayjs(song.releaseDate) : undefined}                          onChange={(date) => {
+                          value={
+                            song.releaseDate
+                              ? dayjs(song.releaseDate)
+                              : undefined
+                          }
+                          onChange={(date) => {
                             const newSongs = [...songs];
                             if (date) {
-                              newSongs[index].releaseDate = date.format('YYYYMMDD') ; 
+                              newSongs[index].releaseDate =
+                                date.format("YYYYMMDD");
                               setSongs(newSongs);
                             }
                           }}
-                         />
+                        />
                       </LocalizationProvider>
                     </Grid>
                     <Grid xs={12} md={6}>
                       <CustomInput
                         required
-                        label="Duration"
+                        label="Duration (in seconds)"
                         type="number"
                         placeholder="Duration"
                         value={song.duration}

@@ -11,7 +11,6 @@ const singerSchema = new mongoose.Schema(
   {
     stockReference: {
       type: String,
-      unique: true,  
       required: true,
     },
     name: {

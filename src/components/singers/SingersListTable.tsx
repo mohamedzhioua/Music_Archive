@@ -21,8 +21,8 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const SingersListTable = (props: any) => {
-  const { sizes: initialSizes } = props;
-  const [sizes, setSizes] = useState([]);
+  const { singers: initialSingers } = props;
+   const [singers, setSingers] = useState([]);
   // const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(0);
@@ -32,8 +32,8 @@ const SingersListTable = (props: any) => {
   const [sizeId, setSizeId] = useState("");
 
   useEffect(() => {
-    setSizes(initialSizes);
-  }, [initialSizes]);
+    setSingers(initialSingers);
+  }, [initialSingers]);
 
   const handleQueryChange = (event: any) => {
     setQuery(event.target.value);
@@ -62,8 +62,8 @@ const SingersListTable = (props: any) => {
       // setSizeId(null)
     }
   };
-  const filteredSizes = simpleFilter(sizes, query);
-  const paginatedData = pagination(filteredSizes, page, limit);
+  const filteredSingers = simpleFilter(singers, query);
+  const paginatedData = pagination(filteredSingers, page, limit);
 
   return (
     <>
@@ -79,8 +79,10 @@ const SingersListTable = (props: any) => {
           <Table sx={{ minWidth: 700 }}>
             <TableHead>
               <TableRow>
+                <TableCell>Reference</TableCell>
                 <TableCell>Name</TableCell>
-                <TableCell>Value</TableCell>
+                <TableCell>Countrie</TableCell>
+                <TableCell>songs</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -96,8 +98,13 @@ const SingersListTable = (props: any) => {
               <TableBody>
                 {paginatedData?.map((item: any) => {
                   return (
-                    <Fragment key={item.id}>
-                      <TableRow key={item.id} hover>
+                    <Fragment key={item._id}>
+                      <TableRow key={item._id} hover>
+                      <TableCell>
+                          <Typography color="text.primary">
+                            {item.stockReference}
+                          </Typography>
+                        </TableCell>
                         <TableCell>
                           <Typography color="text.primary">
                             {item.name}
@@ -105,8 +112,13 @@ const SingersListTable = (props: any) => {
                         </TableCell>
                         <TableCell>
                           <Typography color="text.primary">
-                            {item.value}
+                            {item.country}
                           </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography color="text.primary">
+                          {item.songs.slice(0, 4).map((song: any) => song.name).join(", ")}
+                        {item.songs.length > 4 && " ..."}                            </Typography>
                         </TableCell>
                         <TableCell align="right">
                           <IconButton onClick={() => handleUpdate()}>
@@ -126,7 +138,7 @@ const SingersListTable = (props: any) => {
         </Scrollbar>
         <TablePagination
           component="div"
-          count={filteredSizes?.length}
+          count={filteredSingers?.length}
           onPageChange={onPageChange}
           onRowsPerPageChange={onRowsPerPageChange}
           page={page}

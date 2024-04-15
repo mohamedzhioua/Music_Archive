@@ -1,7 +1,8 @@
 import AddSingerForm from "@/components/singers/AddSingerForm";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
-
-const AddSingerPage = () => {
+ 
+ const AddSingerPage = () => {
+ 
   return (
     <>
       <Container maxWidth="xl">
