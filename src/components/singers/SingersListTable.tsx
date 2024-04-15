@@ -1,4 +1,3 @@
-"use client";
 import {
   Card,
   IconButton,
@@ -22,14 +21,13 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 
 const SingersListTable = (props: any) => {
   const { singers: initialSingers } = props;
-   const [singers, setSingers] = useState([]);
-  // const navigate = useNavigate();
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(5);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [sizeId, setSizeId] = useState("");
+  const [singers, setSingers] = useState([]);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(5);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [singerId, setSingerId] = useState<string>("");
 
   useEffect(() => {
     setSingers(initialSingers);
@@ -47,21 +45,39 @@ const SingersListTable = (props: any) => {
 
   const handleUpdate = () => {};
 
-  const handleDelete = () => {};
-  const onDelete = async () => {
-    try {
-      setLoading(true);
-      // await sizeApi.DeleteSize(sizeId);
-      toast.success("Size deleted.");
-      // setSizes(sizes.filter((item) => item.id !== sizeId));
-    } catch (error) {
-      toast.error("Something went wrong.");
-    } finally {
-      // setLoading(false);
-      // setOpen(false);
-      // setSizeId(null)
-    }
+  const handleDelete = (id: string) => {
+    setSingerId(id);
+    setOpen(true);
   };
+  const onDelete = async () => {
+    setLoading(true)
+    const savingPromise: Promise<void> = new Promise(
+      async (resolve, reject) => {
+        const response = await fetch(`/api/singers?id=${singerId}`, {
+          method: 'DELETE',
+        });
+         if (response.ok){
+          setSingers(singers.filter((item: any) => item._id !== singerId));
+          setLoading(false);
+          setOpen(false);
+          setSingerId("");
+          resolve();
+        }  
+        else {
+          const errorData = await response.json();
+           reject(errorData.message || "something went wrong.");
+        }
+      }
+    );
+      await toast.promise(savingPromise, {
+        loading: 'Deleting...',
+        success: 'Deleted',
+        error: 'Error',
+      });
+ 
+    }
+
+
   const filteredSingers = simpleFilter(singers, query);
   const paginatedData = pagination(filteredSingers, page, limit);
 
@@ -100,7 +116,7 @@ const SingersListTable = (props: any) => {
                   return (
                     <Fragment key={item._id}>
                       <TableRow key={item._id} hover>
-                      <TableCell>
+                        <TableCell>
                           <Typography color="text.primary">
                             {item.stockReference}
                           </Typography>
@@ -117,14 +133,18 @@ const SingersListTable = (props: any) => {
                         </TableCell>
                         <TableCell>
                           <Typography color="text.primary">
-                          {item.songs.slice(0, 4).map((song: any) => song.songName).join(", ")}
-                        {item.songs.length > 4 && " ..."}                            </Typography>
+                            {item.songs
+                              .slice(0, 4)
+                              .map((song: any) => song.songName)
+                              .join(", ")}
+                            {item.songs.length > 4 && " ..."}
+                          </Typography>
                         </TableCell>
                         <TableCell align="right">
                           <IconButton onClick={() => handleUpdate()}>
                             <EditOutlinedIcon fontSize="small" />
                           </IconButton>
-                          <IconButton onClick={() => handleDelete()}>
+                          <IconButton onClick={() => handleDelete(item._id)}>
                             <DeleteOutlineOutlinedIcon fontSize="small" />
                           </IconButton>
                         </TableCell>

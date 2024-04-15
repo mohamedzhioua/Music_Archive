@@ -69,3 +69,33 @@ export async function GET() {
     const singers = await SingerModel.find().populate("songs");
      return Response.json(singers)
   }
+  export async function DELETE(req: NextRequest) {
+    try {
+      await dbConnect();
+      // Get the singer ID from the request body or query parameters
+      const url = new URL(req.url);
+      const _id = url.searchParams.get('id');
+ 
+       // Check if singerId is provided
+      if (!_id) {
+        return Response.json({ message: "Please provide singerId" }, { status: 400 });
+      }
+  
+      // Find the singer by ID
+      const singer = await SingerModel.findById(_id);
+  
+      if (!singer) {
+        return Response.json({ message: "Singer not found" }, { status: 404 });
+      }
+   
+      // Delete the singer
+      await SingerModel.findByIdAndDelete(_id);
+        
+      // Find and delete all songs associated with the singer
+      await SongModel.deleteMany({ _id: { $in: singer.songs } });
+  
+      return Response.json({ message: "Singer and associated songs deleted successfully" });
+    } catch (error: any) {
+      return Response.json({ Error: error.message }, { status: 500 });
+    }
+  }

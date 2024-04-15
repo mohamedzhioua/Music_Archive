@@ -5,6 +5,8 @@ export type Singer = {
   name: string;
   country: string;
   songs: mongoose.Schema.Types.ObjectId[];
+  _id: string;
+
 };
 
 const singerSchema = new mongoose.Schema(
