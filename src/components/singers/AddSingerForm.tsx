@@ -26,6 +26,10 @@ interface Song {
   releaseDate: string;
   duration: string;
   cassetteNumber: string;
+  lecture: {
+    in: string;
+    out: string;
+  };
 }
 interface SingerFormProps {
   initialData: Singer | null;
@@ -39,9 +43,16 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
   const [country, setCountry] = useState<string>(initialData?.country || "");
   const [songs, setSongs] = useState<Song[]>(
     (initialData?.songs as any) || [
-      { songName: "", releaseDate: "", duration: "", cassetteNumber: "" },
+      {
+        songName: "",
+        releaseDate: "",
+        duration: "",
+        cassetteNumber: "",
+        lecture: { in: "", out: "" },
+      },
     ]
   );
+  console.log("🚀 ~ songs:", songs);
 
   const router = useRouter();
 
@@ -51,7 +62,13 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
   ) => {
     const { name, value } = event.target;
     const newSongs = [...songs];
-    newSongs[index][name as keyof Song] = value;
+    if (name === "in" || name === "out") {
+      // Update the lecture object within the song
+      newSongs[index].lecture[name] = value;
+    } else {
+      // Update other song attributes
+      newSongs[index][name as keyof Song] = value;
+    }
     setSongs(newSongs);
   };
 
@@ -63,6 +80,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
         releaseDate: "",
         duration: "",
         cassetteNumber: "",
+        lecture: { in: "", out: "" },
       },
     ]);
   };
@@ -87,30 +105,29 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
     const savingPromise: Promise<void> = new Promise(
       async (resolve, reject) => {
         let response;
-        if (initialData){
-            response = await fetch(`/api/singers/${initialData._id}`, {
+        if (initialData) {
+          response = await fetch(`/api/singers/${initialData._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
           });
-        }else{
-            response = await fetch("/api/singers", {
+        } else {
+          response = await fetch("/api/singers", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
           });
-
         }
         if (response.ok) resolve();
         else {
           const errorData = await response.json();
-          reject(errorData.message || "something went wrong.");
+          reject(errorData.message || "Quelque chose s'est mal passé.");
         }
       }
     );
     await toast.promise(savingPromise, {
-      loading: "Saving the singer information",
-      success: "Saved",
+      loading: "Enregistrement des informations du chanteur",
+      success: "Enregistré",
       error: (error) => `Error: ${error}`,
     });
 
@@ -125,15 +142,15 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
             variant="h3"
             sx={{ fontWeight: "bold", marginLeft: "1rem" }}
           >
-            singer Information
+            Informations sur le chanteur{" "}
           </Typography>
           <Grid container spacing={3} paddingTop={4}>
             <Grid xs={12} md={4}>
               <CustomInput
                 required
                 name="stockReference"
-                label="stock Reference"
-                placeholder="stock Reference"
+                label="Référence du stock"
+                placeholder="Référence du stock"
                 type="text"
                 value={stockReference}
                 onChange={(event) => setStockReference(event.target.value)}
@@ -142,8 +159,8 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
             <Grid xs={12} md={4}>
               <CustomInput
                 required
-                name="name"
-                label="Singer Name"
+                name="Nom du chanteur"
+                label="Nom du chanteur"
                 placeholder="Singer Name"
                 type="text"
                 value={name}
@@ -164,7 +181,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                     {...params}
                     required
                     fullWidth
-                    label="Country"
+                    label="Pays"
                     variant="outlined"
                     name={"country"}
                     onChange={(event) => setCountry(event.target.value)}
@@ -189,7 +206,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                   marginTop: "1rem",
                 }}
               >
-                Singer songs
+                Chansons du chanteur
               </Typography>
               {songs.map((song, index) => (
                 <div
@@ -204,9 +221,9 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                     <Grid xs={12} md={6}>
                       <CustomInput
                         required
-                        label="Name"
+                        label="Nom de la chanson"
                         type="text"
-                        placeholder="song name"
+                        placeholder="Nom de la chanson"
                         value={song.songName}
                         onChange={(event) =>
                           handleSongChange(
@@ -224,7 +241,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                         dateAdapter={AdapterDayjs}
                       >
                         <DatePicker
-                          label="Release Date"
+                          label="Date de sortie"
                           sx={{ width: "100%" }}
                           format="DD/MM/YYYY"
                           value={
@@ -246,9 +263,9 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                     <Grid xs={12} md={6}>
                       <CustomInput
                         required
-                        label="Duration (in seconds)"
+                        label="Durée (en secondes)"
                         type="number"
-                        placeholder="Duration"
+                        placeholder="Durée (en secondes)"
                         value={song.duration}
                         onChange={(event) =>
                           handleSongChange(
@@ -262,9 +279,9 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                     <Grid xs={12} md={6}>
                       <CustomInput
                         required
-                        label="Cassette Number"
+                        label="Numéro de cassette"
                         type="number"
-                        placeholder="Cassette Number"
+                        placeholder="Numéro de cassette"
                         value={song.cassetteNumber}
                         onChange={(event) =>
                           handleSongChange(
@@ -273,6 +290,38 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                           )
                         }
                         name="cassetteNumber"
+                      />
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <CustomInput
+                        required
+                        label="in (en secondes)"
+                        type="number"
+                        placeholder="in (en secondes)"
+                        value={song.lecture.in}
+                        onChange={(event) =>
+                          handleSongChange(
+                            index,
+                            event as React.ChangeEvent<HTMLInputElement>
+                          )
+                        }
+                        name="in"
+                      />
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                      <CustomInput
+                        required
+                        label="out (en secondes)"
+                        type="number"
+                        placeholder="out (en secondes)"
+                        value={song.lecture.out}
+                        onChange={(event) =>
+                          handleSongChange(
+                            index,
+                            event as React.ChangeEvent<HTMLInputElement>
+                          )
+                        }
+                        name="out"
                       />
                     </Grid>
                   </Grid>
@@ -304,7 +353,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                 <AddIcon
                   sx={{ marginRight: 1, height: "1rem", width: "1rem" }}
                 />
-                Add New Song
+                Ajouter une nouvelle chanson
               </CustomButton>
             </div>
           </Grid>
@@ -315,7 +364,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
             size="large"
             sx={{ mt: 4, mr: 2 }}
           >
-            {initialData ? "Save changes" : "Create"}
+            {initialData ? "Enregistrer les modifications" : "Créer"}
           </CustomButton>
           <CustomButton
             onClick={() => router.push(`/singers`)}
@@ -324,7 +373,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
             color="error"
             sx={{ mt: 4 }}
           >
-            Cancel
+            Annuler
           </CustomButton>
         </form>
       </CardContent>

@@ -2,6 +2,7 @@ import {  NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import SingerModel from "@/lib/models/SingerModel";
 import SongModel from "@/lib/models/SongModel";
+import { createSongs } from "@/lib/utils/creatSongs";
 
 export async function GET(req:NextRequest,
    { params }: { params: { id: string } }
@@ -12,9 +13,9 @@ export async function GET(req:NextRequest,
   if (id) {
     const singer = await SingerModel.findById(id).select('_id stockReference name country').populate({
       path: 'songs',
-      select: '_id songName releaseDate duration cassetteNumber'  
+      select: '_id songName releaseDate duration cassetteNumber lecture.in lecture.out'  
     });
-    
+     
     if (!singer) {
       return NextResponse.json({ error: 'Singer not found' }, { status: 404 });
     }
@@ -44,28 +45,19 @@ export async function PUT(
     }
 
     // Update singer information
-      singer.stockReference = stockReference;
-      singer.name = name;
-      singer.country = country;
+    singer.stockReference = stockReference;
+    singer.name = name;
+    singer.country = country;
 
-      // Delete existing songs from the database
-      await SongModel.deleteMany({ _id: { $in: singer.songs } });
-      
-      // Clear existing songs array
-      singer.songs = [];
+    // Delete existing songs from the database
+    await SongModel.deleteMany({ _id: { $in: singer.songs } });
 
-      // Create and add new songs
-      for (const songData of songs) {
-        const { songName, releaseDate, duration, cassetteNumber } = songData;
-        const newSong = await SongModel.create({
-          songName,
-          releaseDate,
-          duration,
-          cassetteNumber,
-        });
-        singer.songs.push(newSong._id);
-      }
+    // Clear existing songs array
+    singer.songs = [];
 
+    // Create and add new songs
+    const newSongIds = await createSongs(songs);
+    singer.songs = newSongIds;
 
     // Save the updated singer
     await singer.save();
@@ -75,5 +67,3 @@ export async function PUT(
     return NextResponse.json({ message: "Error editing singer" }, { status: 500 });
   }
 }
-
- 

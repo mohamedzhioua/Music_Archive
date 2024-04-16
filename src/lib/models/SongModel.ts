@@ -5,6 +5,10 @@ export type Song = {
   releaseDate: Date;
   duration: number;
   cassetteNumber: number;
+  lecture: {
+    in: number;
+    out: number;
+  };
 };
 
 const songSchema = new mongoose.Schema(
@@ -25,11 +29,22 @@ const songSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    lecture: {
+      in: {
+        type: Number,
+        required: true,
+      },
+      out: {
+        type: Number,
+        required: true,
+      },
+    },
   },
   {
     timestamps: true,
   }
 );
+
 const SongModel = mongoose.models.Song || mongoose.model("Song", songSchema);
 
 export default SongModel;
