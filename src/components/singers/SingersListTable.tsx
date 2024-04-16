@@ -18,6 +18,7 @@ import { pagination } from "@/lib/utils/paginations";
 import TableSearchBar from "../ui/TableSearchBar";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { useRouter } from "next/navigation";
 
 const SingersListTable = (props: any) => {
   const { singers: initialSingers } = props;
@@ -28,6 +29,7 @@ const SingersListTable = (props: any) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [singerId, setSingerId] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     setSingers(initialSingers);
@@ -43,40 +45,39 @@ const SingersListTable = (props: any) => {
     setLimit(parseInt(event.target.value, 10));
   };
 
-  const handleUpdate = () => {};
+  const handleUpdate = (id: string) => {
+    router.push(`/singers/edit/${id}`);
+  };
 
   const handleDelete = (id: string) => {
     setSingerId(id);
     setOpen(true);
   };
   const onDelete = async () => {
-    setLoading(true)
+    setLoading(true);
     const savingPromise: Promise<void> = new Promise(
       async (resolve, reject) => {
         const response = await fetch(`/api/singers?id=${singerId}`, {
-          method: 'DELETE',
+          method: "DELETE",
         });
-         if (response.ok){
+        if (response.ok) {
           setSingers(singers.filter((item: any) => item._id !== singerId));
           setLoading(false);
           setOpen(false);
           setSingerId("");
           resolve();
-        }  
-        else {
+        } else {
           const errorData = await response.json();
-           reject(errorData.message || "something went wrong.");
+          reject(errorData.message || "something went wrong.");
         }
       }
     );
-      await toast.promise(savingPromise, {
-        loading: 'Deleting...',
-        success: 'Deleted',
-        error: 'Error',
-      });
- 
-    }
-
+    await toast.promise(savingPromise, {
+      loading: "Deleting...",
+      success: "Deleted",
+      error: "Error",
+    });
+  };
 
   const filteredSingers = simpleFilter(singers, query);
   const paginatedData = pagination(filteredSingers, page, limit);
@@ -141,7 +142,7 @@ const SingersListTable = (props: any) => {
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
-                          <IconButton onClick={() => handleUpdate()}>
+                          <IconButton onClick={() => handleUpdate(item._id)}>
                             <EditOutlinedIcon fontSize="small" />
                           </IconButton>
                           <IconButton onClick={() => handleDelete(item._id)}>

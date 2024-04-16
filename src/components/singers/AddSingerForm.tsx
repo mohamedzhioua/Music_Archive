@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Singer } from "@/lib/models/SingerModel";
 
 interface Song {
   songName: string;
@@ -26,14 +27,22 @@ interface Song {
   duration: string;
   cassetteNumber: string;
 }
+interface SingerFormProps {
+  initialData: Singer | null;
+}
 
-const AddSingerForm = () => {
-  const [stockReference, setStockReference] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-  const [songs, setSongs] = useState<Song[]>([
-    { songName: "", releaseDate: "", duration: "", cassetteNumber: "" },
-  ]);
+const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
+  const [stockReference, setStockReference] = useState<string>(
+    initialData?.stockReference || ""
+  );
+  const [name, setName] = useState<string>(initialData?.name || "");
+  const [country, setCountry] = useState<string>(initialData?.country || "");
+  const [songs, setSongs] = useState<Song[]>(
+    (initialData?.songs as any) || [
+      { songName: "", releaseDate: "", duration: "", cassetteNumber: "" },
+    ]
+  );
+
   const router = useRouter();
 
   const handleSongChange = (
@@ -77,11 +86,21 @@ const AddSingerForm = () => {
 
     const savingPromise: Promise<void> = new Promise(
       async (resolve, reject) => {
-        const response = await fetch("/api/singers", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
+        let response;
+        if (initialData){
+            response = await fetch(`/api/singers/${initialData._id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          });
+        }else{
+            response = await fetch("/api/singers", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          });
+
+        }
         if (response.ok) resolve();
         else {
           const errorData = await response.json();
@@ -285,18 +304,18 @@ const AddSingerForm = () => {
                 <AddIcon
                   sx={{ marginRight: 1, height: "1rem", width: "1rem" }}
                 />
-                Add New Add Song
+                Add New Song
               </CustomButton>
             </div>
           </Grid>
- 
+
           <CustomButton
             variant="contained"
             type="submit"
             size="large"
-            sx={{ mt: 4 , mr: 2 }}
-            >
-            Create
+            sx={{ mt: 4, mr: 2 }}
+          >
+            {initialData ? "Save changes" : "Create"}
           </CustomButton>
           <CustomButton
             onClick={() => router.push(`/singers`)}
@@ -304,10 +323,10 @@ const AddSingerForm = () => {
             size="large"
             color="error"
             sx={{ mt: 4 }}
-            >
+          >
             Cancel
           </CustomButton>
-         </form>
+        </form>
       </CardContent>
     </Card>
   );
