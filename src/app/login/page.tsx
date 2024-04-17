@@ -1,9 +1,10 @@
-"use client";
 
 import Loginform from "@/components/login-form";
 import { Box, Paper, Typography } from "@mui/material";
-
+ 
 const LoginPage = () => {
+  
+  
   return (
     <Box
       sx={{
