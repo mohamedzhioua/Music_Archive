@@ -1,8 +1,7 @@
 import AddSingerForm from "@/components/singers/AddSingerForm";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
- 
- const AddSingerPage = () => {
- 
+
+const AddSingerPage = () => {
   return (
     <>
       <Container maxWidth="xl">
@@ -20,7 +19,7 @@ import { Box, Container, Divider, Stack, Typography } from "@mui/material";
               variant={"h1"}
               sx={{ fontWeight: "bold", letterSpacing: "0.15px !important" }}
             >
-              {`Add a new Singer`}
+              {"Ajouter un nouveau chanteur"}
             </Typography>
           </Stack>
         </Box>
@@ -31,7 +30,7 @@ import { Box, Container, Divider, Stack, Typography } from "@mui/material";
             marginRight: "1rem",
           }}
         />
-        <AddSingerForm initialData={null}/>
+        <AddSingerForm initialData={null} />
       </Container>
     </>
   );

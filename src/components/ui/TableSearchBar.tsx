@@ -1,4 +1,5 @@
 import { Box, InputAdornment, TextField } from "@mui/material";
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import React from "react";
 
 interface TableSearchBarProps {
@@ -32,12 +33,12 @@ const TableSearchBar: React.FC<TableSearchBarProps> = ({
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                {/* <SearchOutlinedIcon fontSize="small" /> */}
+                <SearchOutlinedIcon fontSize="small" />
               </InputAdornment>
             ),
           }}
           onChange={handleQueryChange}
-          placeholder="Search"
+          placeholder="Recherche"
           value={query}
           variant="outlined"
         />

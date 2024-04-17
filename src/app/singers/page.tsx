@@ -3,7 +3,7 @@
 import SingersListTable from "@/components/singers/SingersListTable";
 import CustomButton from "@/components/ui/custom-button";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
- import AddIcon from "@mui/icons-material/Add";
+import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
 import { Singer } from "@/lib/models/SingerModel";
 import { useRouter } from "next/navigation";
@@ -36,18 +36,18 @@ const SingersListPage = () => {
               variant={"h1"}
               sx={{ fontWeight: "bold", letterSpacing: "0.15px !important" }}
             >
-               {`Singers (${singers.length})`}
+              {`Chanteurs (${singers.length})`}
             </Typography>
             <Typography
               variant="h5"
               sx={{ letterSpacing: "0.15px !important" }}
             >
-              {`Manage singers from Here`}
+              {`Gérer les chanteurs d'ici`}
             </Typography>
           </Stack>
           <CustomButton onClick={() => router.push(`/singers/add`)}>
             <AddIcon sx={{ marginRight: 1, height: "1rem", width: "1rem" }} />{" "}
-            Add New
+            Ajouter un nouveau
           </CustomButton>
         </Box>
         <Divider

@@ -17,9 +17,9 @@ import { simpleFilter } from "@/lib/utils/filters";
 import { pagination } from "@/lib/utils/paginations";
 import TableSearchBar from "../ui/TableSearchBar";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useRouter } from "next/navigation";
-
 const SingersListTable = (props: any) => {
   const { singers: initialSingers } = props;
   const [singers, setSingers] = useState([]);
@@ -48,7 +48,10 @@ const SingersListTable = (props: any) => {
   const handleUpdate = (id: string) => {
     router.push(`/singers/edit/${id}`);
   };
-
+  const handleDisplaySinger = (id: string) => {
+    router.push(`/singers/singer/${id}`);
+  };
+  
   const handleDelete = (id: string) => {
     setSingerId(id);
     setOpen(true);
@@ -68,14 +71,14 @@ const SingersListTable = (props: any) => {
           resolve();
         } else {
           const errorData = await response.json();
-          reject(errorData.message || "something went wrong.");
+          reject(errorData.message || "Quelque chose s'est mal passé.");
         }
       }
     );
     await toast.promise(savingPromise, {
-      loading: "Deleting...",
-      success: "Deleted",
-      error: "Error",
+      loading: "Suppression en cours...",
+      success: "Supprimé",
+      error: "Erreur",
     });
   };
 
@@ -96,10 +99,10 @@ const SingersListTable = (props: any) => {
           <Table sx={{ minWidth: 700 }}>
             <TableHead>
               <TableRow>
-                <TableCell>Reference</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Countrie</TableCell>
-                <TableCell>songs</TableCell>
+                <TableCell>Référence</TableCell>
+                <TableCell>Nom</TableCell>
+                <TableCell>Pays</TableCell>
+                <TableCell>Chansons</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -107,7 +110,7 @@ const SingersListTable = (props: any) => {
               <TableBody>
                 <TableRow>
                   <TableCell colSpan={3} align="center">
-                    <Typography color="text.primary"> No result </Typography>
+                    <Typography color="text.primary">Aucun résultat</Typography>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -142,6 +145,9 @@ const SingersListTable = (props: any) => {
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
+                        <IconButton onClick={() => handleDisplaySinger(item._id)}>
+                            <RemoveRedEyeOutlinedIcon fontSize="small" />
+                          </IconButton>
                           <IconButton onClick={() => handleUpdate(item._id)}>
                             <EditOutlinedIcon fontSize="small" />
                           </IconButton>

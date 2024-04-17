@@ -221,7 +221,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                     <Grid xs={12} md={6}>
                       <CustomInput
                         required
-                        label="Nom de la chanson"
+                         label="Nom de la chanson"
                         type="text"
                         placeholder="Nom de la chanson"
                         value={song.songName}
