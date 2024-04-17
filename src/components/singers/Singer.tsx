@@ -16,7 +16,7 @@ const SingerInfo = ({ data }: { data: Singer }) => {
           <Stack
             style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}
           >
-            <Link href="/singers">
+            <Link href="/singers"style={{textDecoration:"none"}}>
               <Typography
                 variant="h3"
                 sx={{

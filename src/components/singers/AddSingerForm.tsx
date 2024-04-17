@@ -137,7 +137,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
   return (
     <Card>
       <CardContent>
-        <form onSubmit={handleFormSubmit} noValidate>
+        <form onSubmit={handleFormSubmit} >
           <Typography
             variant="h3"
             sx={{ fontWeight: "bold", marginLeft: "1rem" }}
@@ -154,7 +154,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                 type="text"
                 value={stockReference}
                 onChange={(event) => setStockReference(event.target.value)}
-              />
+               />
             </Grid>
             <Grid xs={12} md={4}>
               <CustomInput
@@ -185,7 +185,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                     variant="outlined"
                     name={"country"}
                     onChange={(event) => setCountry(event.target.value)}
-                  />
+                   />
                 )}
               />
             </Grid>
@@ -233,7 +233,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                         }
                         name="songName"
                         fullWidth
-                      />
+                       />
                     </Grid>
                     <Grid xs={12} md={6}>
                       <LocalizationProvider

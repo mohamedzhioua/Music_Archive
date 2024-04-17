@@ -19,6 +19,7 @@ const Loginform = () => {
             type="text"
             name="name"
             required
+             error={!!error}
           />
         </Grid>
         <Grid xs={12}>
@@ -28,6 +29,7 @@ const Loginform = () => {
             placeholder="password"
             type="password"
             name="password"
+            error={!!error}
           />
         </Grid>
         {error && <Typography color="error">{error}</Typography>}

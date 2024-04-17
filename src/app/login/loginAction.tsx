@@ -32,7 +32,7 @@ export default async function loginAction(
 
   // Redirect to login if success
   if (res.ok) {
-    redirect("/protected");
+    redirect("/singers");
   } else {
     return json.error;
   }
