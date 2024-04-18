@@ -21,7 +21,7 @@ This project is designed to assist a student, who isn't related to web developme
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/music-archive-app.git
+   git clone https://github.com/mohamedzhioua/music_archive.git
    ```
 
 2. Navigate to the project directory:
