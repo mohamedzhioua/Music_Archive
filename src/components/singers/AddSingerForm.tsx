@@ -36,6 +36,7 @@ interface SingerFormProps {
 }
 
 const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
+  const router = useRouter();
   const [stockReference, setStockReference] = useState<string>(
     initialData?.stockReference || ""
   );
@@ -52,9 +53,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
       },
     ]
   );
-  console.log("🚀 ~ songs:", songs);
-
-  const router = useRouter();
+ 
 
   const handleSongChange = (
     index: number,
@@ -106,13 +105,13 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
       async (resolve, reject) => {
         let response;
         if (initialData) {
-          response = await fetch(`/api/singers/${initialData._id}`, {
+          response = await fetch(process.env.ROOT_URL + `/api/singers/${initialData._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
           });
         } else {
-          response = await fetch("/api/singers", {
+          response = await fetch(process.env.ROOT_URL + "/api/singers", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),

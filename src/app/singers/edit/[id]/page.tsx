@@ -3,7 +3,7 @@ import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 
 export const getSinger = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/singers/${id}`, {
+    const res = await fetch(process.env.ROOT_URL + `/api/singers/${id}`, {
       cache: "no-store",
     });
 

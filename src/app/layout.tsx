@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import ThemeContextProvider from "@/context/ThemeContext";
-import ThemeSwitch from "@/components/theme-switch";
 import { Toaster } from "react-hot-toast";
+import Nav from "@/components/nav";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,8 +20,8 @@ export default function RootLayout({
       <body>
         <ThemeContextProvider>
           <ThemeRegistry>
-            <ThemeSwitch />
             <Toaster/>
+            <Nav/>
             {children}
           </ThemeRegistry>
         </ThemeContextProvider>

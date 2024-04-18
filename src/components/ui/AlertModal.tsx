@@ -53,10 +53,10 @@ export const AlertModal: React.FC<AlertModalProps> = ({
             variant={"h1"}
             sx={{ fontWeight: "bold", letterSpacing: "0.15px !important" }}
           >
-            {`Are you sure?`}
+        {`Êtes-vous sûr(e) ?`}
           </Typography>
           <Typography variant="h5" sx={{ letterSpacing: "0.15px !important" }}>
-            {`This action cannot be undone.`}
+          {`Cette action ne peut pas être annulée.`}
           </Typography>
         </Stack>
         <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
@@ -66,7 +66,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
             onClick={onClose}
             sx={{ mr: 2 }}
           >
-            Cancel
+                    Annuler
+
           </CustomButton>
           <CustomButton
             disabled={loading}
@@ -74,7 +75,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
             color="error"
             onClick={onConfirm}
           >
-            Continue
+            Continuer
           </CustomButton>
         </Box>
       </Box>

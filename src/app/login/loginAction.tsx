@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -21,19 +22,22 @@ export default async function loginAction(
   });
 
   const json = await res.json();
-
-  cookies().set("Authorization", json.token, {
-    secure: true,
-    httpOnly: true,
-    expires: Date.now() + 24 * 60 * 60 * 1000 * 3,
-    path: "/",
-    sameSite: "strict",
-  });
-
   // Redirect to login if success
   if (res.ok) {
+    cookies().set("Authorization", json.token, {
+      secure: true,
+      httpOnly: true,
+      expires: Date.now() + 24 * 60 * 60 * 1000 * 3,
+      path: "/",
+      sameSite: "strict",
+    });
     redirect("/singers");
   } else {
     return json.error;
   }
 }
+
+export const logout =  () => {
+  cookies().delete("Authorization") 
+  revalidatePath("/login");
+  };
