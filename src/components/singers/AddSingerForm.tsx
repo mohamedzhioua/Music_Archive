@@ -60,16 +60,28 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value } = event.target;
+    // Create a copy of the songs array
     const newSongs = [...songs];
     if (name === "in" || name === "out") {
-      // Update the lecture object within the song
-      newSongs[index].lecture[name] = value;
+      // Create a copy of the lecture object within the song
+      newSongs[index] = {
+        ...newSongs[index],
+        lecture: {
+          ...newSongs[index].lecture,
+          [name]: value
+        }
+      };
     } else {
       // Update other song attributes
-      newSongs[index][name as keyof Song] = value;
+      newSongs[index] = {
+        ...newSongs[index],
+        [name as keyof Song]: value
+      };
     }
+    // Update state with the newSongs array
     setSongs(newSongs);
   };
+  
 
   const addSongField = () => {
     setSongs([
@@ -172,7 +184,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                 value={country}
                 options={countries}
                 autoHighlight
-                onChange={(event, newValue) => {
+                onChange={(event, newValue:any) => {
                   setCountry(newValue);
                 }}
                 renderInput={(params: any) => (
