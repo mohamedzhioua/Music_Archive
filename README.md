@@ -35,7 +35,7 @@ This project is designed to assist a student, who isn't related to web developme
    ```plaintext
    MONGODB_URI=your_mongodb_uri
    JWT_SECRET=your_jwt_secret
-   API_URL=your_root_url
+   NEXT_PUBLIC_API_URL=your_root_url
    ```
 
    Replace `your_mongodb_uri`, `your_jwt_secret`, and `your_root_url` with your actual MongoDB URI, JWT secret, and root URL respectively.
