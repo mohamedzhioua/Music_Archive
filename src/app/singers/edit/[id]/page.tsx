@@ -1,22 +1,8 @@
 import AddSingerForm from "@/components/singers/AddSingerForm";
+import { getSinger } from "@/lib/utils/getSinger";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 
-export const getSinger = async (id: string) => {
-  try {
-    const res = await fetch(process.env.ROOT_URL + `/api/singers/${id}`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch topic");
-    }
-
-    const data = res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+ 
 export default async function Editpage({ params }: { params: { id: string } }) {
   const singer = await getSinger(params.id);
  

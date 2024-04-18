@@ -1,6 +1,6 @@
 import { Container,  Typography } from "@mui/material";
-import { getSinger } from "../../edit/[id]/page";
-import SingerInfo from "@/components/singers/Singer";
+ import SingerInfo from "@/components/singers/Singer";
+import { getSinger } from "@/lib/utils/getSinger";
 
 export default async function Editpage({ params }: { params: { id: string } }) {
   const singer = await getSinger(params.id);
