@@ -39,5 +39,5 @@ export default async function loginAction(
 
 export const logout =  () => {
   cookies().delete("Authorization") 
-  revalidatePath("/login");
+  revalidatePath("/");
   };

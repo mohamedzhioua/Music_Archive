@@ -8,7 +8,7 @@ export const LogoutBtn = () => {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    router.push("/");
   };
 
   return <CustomButton onClick={handleLogout}>Logout</CustomButton>;

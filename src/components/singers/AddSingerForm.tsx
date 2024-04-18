@@ -105,13 +105,13 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
       async (resolve, reject) => {
         let response;
         if (initialData) {
-          response = await fetch(process.env.ROOT_URL + `/api/singers/${initialData._id}`, {
+          response = await fetch(`/api/singers/${initialData._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
           });
         } else {
-          response = await fetch(process.env.ROOT_URL + "/api/singers", {
+          response = await fetch(`/api/singers`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),

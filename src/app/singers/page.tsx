@@ -15,7 +15,7 @@ const SingersListPage = () => {
     fetchSingers();
   }, []);
   async function fetchSingers() {
-    const res = await fetch(process.env.ROOT_URL + "/api/singers");
+    const res = await fetch( "/api/singers");
     const singers = await res.json();
     setSingers(singers);
   }

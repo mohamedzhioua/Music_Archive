@@ -60,7 +60,7 @@ const SingersListTable = (props: any) => {
     setLoading(true);
     const savingPromise: Promise<void> = new Promise(
       async (resolve, reject) => {
-        const response = await fetch(process.env.ROOT_URL + `/api/singers?id=${singerId}`, {
+        const response = await fetch(`/api/singers?id=${singerId}`, {
           method: "DELETE",
         });
         if (response.ok) {

@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   // Check for cookie
   const cookie = cookies().get("Authorization");
   if (!cookie) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   // Validate it
@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
   try {
     const { payload } = await jose.jwtVerify(jwt, secret, {});
   } catch (err) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 }
 
