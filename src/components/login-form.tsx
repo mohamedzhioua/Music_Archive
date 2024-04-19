@@ -7,7 +7,7 @@ import { useFormState } from "react-dom";
 import loginAction from "@/app/login/loginAction";
 
 const Loginform = () => {
-  const [state, formAction] = useFormState<any,FormData>(loginAction, undefined);
+  const [state, formAction] = useFormState<any,FormData>(loginAction, null);
  
   return (
     <form action={formAction}>

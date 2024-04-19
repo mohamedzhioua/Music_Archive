@@ -13,7 +13,7 @@ interface LoginResult {
   error?: string;
 }
 export default async function loginAction(
-  prevState: {error:undefined|string},
+  prevState: {error:null|string},
   formData: FormData
 ): Promise<LoginResult> {
  
