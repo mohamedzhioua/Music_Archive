@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI: string = process.env.MONGODB_URI || "";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 async function dbConnect() {
   try {
+    if (!MONGODB_URI) {
+      throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+    }
+
     await mongoose.connect(MONGODB_URI);
-    console.log("Connected to myDB");
   } catch (error) {
-    return { error: "Connection failed!" };
+    throw new Error("Connection failed!");
   }
 }
 

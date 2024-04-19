@@ -1,7 +1,7 @@
 "use server";
 
 import dbConnect from "@/lib/dbConnect";
- import { revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
@@ -13,57 +13,55 @@ interface LoginResult {
   error?: string;
 }
 export default async function loginAction(
-  prevState: {error:null|string},
+  prevState: { error: null | string },
   formData: FormData
 ): Promise<LoginResult> {
  
-  // Get the data off the form
-const name = formData.get("name") as string;
-const password = formData.get("password") as string;
+    // Get the data off the form
+    const name = formData.get("name") as string;
+    const password = formData.get("password") as string;
 
+    // Validate the input
+    if (!name || !password) {
+      return { error: "Missing name or password" };
+    }
 
-  // Validate the input
-  if (!name || !password) {
-    return { error: 'Missing name or password' };
-  }
-
-  // Connect to the database
-  await dbConnect();
-
-  // Lookup the user
-  const user = await UserModel.findOne({ name: name });
+    // Connect to the database
+ await dbConnect();
  
-  // If user not found, return error
-  if (!user) {
-    return { error: 'Invalid name or password' };
-  }
+    // Lookup the user
+    const user = await UserModel.findOne({ name: name });
 
-  // Compare password
-  const isCorrectPassword = bcrypt.compareSync(password, user.password);
+    // If user not found, return error
+    if (!user) {
+      return { error: "Invalid name or password" };
+    }
 
-  // If password is incorrect, return error
-  if (!isCorrectPassword) {
-    return { error: 'Invalid name or password' };
-  }
+    // Compare password
+    const isCorrectPassword = bcrypt.compareSync(password, user.password);
 
-  // If user is not admin, return error
-  if (!user.isAdmin) {
-    return { error: 'Vous devez être administrateur pour avoir accès.' };
-  }
+    // If password is incorrect, return error
+    if (!isCorrectPassword) {
+      return { error: "Invalid name or password" };
+    }
 
-// Create jwt token
-const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-const alg = "HS256";
+    // If user is not admin, return error
+    if (!user.isAdmin) {
+      return { error: "Vous devez être administrateur pour avoir accès." };
+    }
 
-const jwt = await new jose.SignJWT({})
-  .setProtectedHeader({ alg })
-  .setExpirationTime("72h")
-  .setSubject(user._id.toString())
-  .sign(secret);
+    // Create jwt token
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const alg = "HS256";
 
+    const jwt = await new jose.SignJWT({})
+      .setProtectedHeader({ alg })
+      .setExpirationTime("72h")
+      .setSubject(user._id.toString())
+      .sign(secret);
 
-   // Redirect to login if success
-     cookies().set("Authorization", jwt, {
+    // Redirect to login if success
+    cookies().set("Authorization", jwt, {
       secure: true,
       httpOnly: true,
       expires: Date.now() + 24 * 60 * 60 * 1000 * 3,
@@ -71,10 +69,11 @@ const jwt = await new jose.SignJWT({})
       sameSite: "strict",
     });
     redirect("/singers");
-   }
- 
 
-export const logout =  () => {
-  cookies().delete("Authorization") 
+ 
+ }
+
+export const logout = () => {
+  cookies().delete("Authorization");
   revalidatePath("/");
-  };
+};
