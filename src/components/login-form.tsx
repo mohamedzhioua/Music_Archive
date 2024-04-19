@@ -14,7 +14,7 @@ const Loginform = () => {
       <Grid container spacing={2}>
         <Grid xs={12}>
           <CustomInput
-            label="Name*"
+            label="Name"
             placeholder="name"
             type="text"
             name="name"
@@ -25,7 +25,7 @@ const Loginform = () => {
         <Grid xs={12}>
           <CustomInput
             required
-            label="Password*"
+            label="Password"
             placeholder="password"
             type="password"
             name="password"
