@@ -1,3 +1,4 @@
+
 import { Singer } from "@/lib/models/SingerModel";
 import {
   Card,
@@ -42,7 +43,7 @@ const SingerInfo = ({ data }: { data: Singer }) => {
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 - Référence du stock :
               </Typography>
-              <Typography variant="h6">{data.stockReference}</Typography>
+              <Typography variant="h6">{data?.stockReference}</Typography>
             </Stack>
             <Stack
               style={{ display: "flex", flexDirection: "row", gap: "0.5rem" }}
@@ -50,7 +51,7 @@ const SingerInfo = ({ data }: { data: Singer }) => {
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 - Nom du chanteur :
               </Typography>
-              <Typography variant="h6">{data.name}</Typography>
+              <Typography variant="h6">{data?.name}</Typography>
             </Stack>
             <Stack
               style={{ display: "flex", flexDirection: "row", gap: "0.5rem" }}
@@ -58,7 +59,7 @@ const SingerInfo = ({ data }: { data: Singer }) => {
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 - Pays :
               </Typography>
-              <Typography variant="h6">{data.country}</Typography>
+              <Typography variant="h6">{data?.country}</Typography>
             </Stack>
           </Stack>
 

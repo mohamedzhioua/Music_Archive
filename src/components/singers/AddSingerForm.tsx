@@ -31,11 +31,10 @@ interface Song {
     out: string;
   };
 }
-interface SingerFormProps {
-  initialData: Singer | null;
-}
+ 
 
-const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
+const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
+ 
   const router = useRouter();
   const [stockReference, setStockReference] = useState<string>(
     initialData?.stockReference || ""
@@ -53,7 +52,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
       },
     ]
   );
- 
+  
 
   const handleSongChange = (
     index: number,
@@ -117,7 +116,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
       async (resolve, reject) => {
         let response;
         if (initialData) {
-          response = await fetch(`/api/singers/${initialData._id}`, {
+          response = await fetch(`/api/singers/${initialData?._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
@@ -219,7 +218,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
               >
                 Chansons du chanteur
               </Typography>
-              {songs.map((song, index) => (
+              {songs?.map((song, index) => (
                 <div
                   key={index}
                   style={{
@@ -235,7 +234,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                          label="Nom de la chanson"
                         type="text"
                         placeholder="Nom de la chanson"
-                        value={song.songName}
+                        value={song?.songName}
                         onChange={(event) =>
                           handleSongChange(
                             index,
@@ -256,8 +255,8 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                           sx={{ width: "100%" }}
                           format="DD/MM/YYYY"
                           value={
-                            song.releaseDate
-                              ? dayjs(song.releaseDate)
+                            song?.releaseDate
+                              ? dayjs(song?.releaseDate)
                               : undefined
                           }
                           onChange={(date) => {
@@ -277,7 +276,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                         label="Durée (en secondes)"
                         type="number"
                         placeholder="Durée (en secondes)"
-                        value={song.duration}
+                        value={song?.duration}
                         onChange={(event) =>
                           handleSongChange(
                             index,
@@ -293,7 +292,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                         label="Numéro de cassette"
                         type="number"
                         placeholder="Numéro de cassette"
-                        value={song.cassetteNumber}
+                        value={song?.cassetteNumber}
                         onChange={(event) =>
                           handleSongChange(
                             index,
@@ -309,7 +308,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                         label="in (en secondes)"
                         type="number"
                         placeholder="in (en secondes)"
-                        value={song.lecture.in}
+                        value={song?.lecture?.in}
                         onChange={(event) =>
                           handleSongChange(
                             index,
@@ -325,7 +324,7 @@ const AddSingerForm: React.FC<SingerFormProps> = ({ initialData }) => {
                         label="out (en secondes)"
                         type="number"
                         placeholder="out (en secondes)"
-                        value={song.lecture.out}
+                        value={song?.lecture?.out}
                         onChange={(event) =>
                           handleSongChange(
                             index,

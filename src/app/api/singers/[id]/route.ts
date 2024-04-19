@@ -4,22 +4,30 @@ import SingerModel from "@/lib/models/SingerModel";
 import SongModel from "@/lib/models/SongModel";
 import { createSongs } from "@/lib/utils/creatSongs";
 
-export async function GET(req:NextRequest,
-   { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
-   await dbConnect();
- 
-  if (id) {
-    const singer = await SingerModel.findById(id).select('_id stockReference name country').populate({
-      path: 'songs',
-      select: '_id songName releaseDate duration cassetteNumber lecture.in lecture.out'  
-    });
-     
+  await dbConnect();
+
+  // Check if the singer ID is provided
+  if (!id) {
+    return NextResponse.json({ error: "Invalid singer ID" }, { status: 400 });
+  }
+
+  try {
+    const singer = await SingerModel.findById(id)
+      .select('_id stockReference name country')
+      .populate({
+        path: 'songs',
+        select: '_id songName releaseDate duration cassetteNumber lecture.in lecture.out'
+      });
+
     if (!singer) {
       return NextResponse.json({ error: 'Singer not found' }, { status: 404 });
     }
-    return NextResponse.json(singer)
+
+    return NextResponse.json(singer);
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 export async function PUT(

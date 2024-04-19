@@ -7,8 +7,8 @@ import { useFormState } from "react-dom";
 import loginAction from "@/app/login/loginAction";
 
 const Loginform = () => {
-  const [error, formAction] = useFormState(loginAction, undefined);
-
+  const [state, formAction] = useFormState<any,FormData>(loginAction, undefined);
+ 
   return (
     <form action={formAction}>
       <Grid container spacing={2}>
@@ -19,7 +19,7 @@ const Loginform = () => {
             type="text"
             name="name"
             required
-             error={!!error}
+             error={!!state?.error}
           />
         </Grid>
         <Grid xs={12}>
@@ -29,10 +29,10 @@ const Loginform = () => {
             placeholder="password"
             type="password"
             name="password"
-            error={!!error}
+            error={!!state?.error}
           />
         </Grid>
-        {error && <Typography color="error">{error}</Typography>}
+        {state?.error && <Typography color="error">{state?.error}</Typography>}
 
         <Grid xs={12}>
           <CustomButton
