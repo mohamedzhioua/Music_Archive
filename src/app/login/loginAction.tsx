@@ -1,22 +1,19 @@
 "use server";
 
-import dbConnect from "@/lib/dbConnect";
-import { revalidatePath } from "next/cache";
+ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import * as jose from "jose";
-import UserModel from "@/lib/models/UserModel";
+ import { connectToDatabase } from "@/lib/database";
+import UserModel from "@/lib/database/models/UserModel";
+ 
 
-interface LoginResult {
-  token?: string;
-  error?: string;
-}
-export default async function loginAction(
+export async function  loginAction(
   prevState: { error: null | string },
   formData: FormData
-): Promise<LoginResult> {
- 
+){
+   
     // Get the data off the form
     const name = formData.get("name") as string;
     const password = formData.get("password") as string;
@@ -27,10 +24,11 @@ export default async function loginAction(
     }
 
     // Connect to the database
- await dbConnect();
- 
+    await connectToDatabase();
+
     // Lookup the user
-    const user = await UserModel.findOne({ name: name });
+    const user = await UserModel.findOne({ name: name });      
+    console.log("🚀 ~ user:", user)
 
     // If user not found, return error
     if (!user) {
@@ -69,9 +67,8 @@ export default async function loginAction(
       sameSite: "strict",
     });
     redirect("/singers");
-
  
- }
+}
 
 export const logout = () => {
   cookies().delete("Authorization");

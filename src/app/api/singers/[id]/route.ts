@@ -1,14 +1,13 @@
 import {  NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect";
-import SingerModel from "@/lib/models/SingerModel";
-import SongModel from "@/lib/models/SongModel";
+ import SingerModel from "@/lib/database/models/SingerModel";
+import SongModel from "@/lib/database/models/SongModel";
 import { createSongs } from "@/lib/utils/creatSongs";
-
+import { connectToDatabase } from "@/lib/database";
+ 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
-  await dbConnect();
-
-  // Check if the singer ID is provided
+    // Connect to the database
+    await connectToDatabase();  // Check if the singer ID is provided
   if (!id) {
     return NextResponse.json({ error: "Invalid singer ID" }, { status: 400 });
   }

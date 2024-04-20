@@ -1,5 +1,5 @@
 
-import { Singer } from "@/lib/models/SingerModel";
+import { Singer } from "@/lib/database/models/SingerModel";
 import {
   Card,
   CardContent,

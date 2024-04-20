@@ -1,4 +1,4 @@
-import SongModel from "../models/SongModel";
+import SongModel from "../database/models/SongModel";
 
 export async function createSongs(songs: any[]): Promise<string[]> {
     const songIds: string[] = [];

@@ -4,8 +4,8 @@ import { Unstable_Grid2 as Grid, Typography } from "@mui/material";
 import CustomInput from "./ui/CustomInput";
 import CustomButton from "./ui/custom-button";
 import { useFormState } from "react-dom";
-import loginAction from "@/app/login/loginAction";
-
+import { loginAction } from "@/app/login/loginAction";
+ 
 const Loginform = () => {
   const [state, formAction] = useFormState<any,FormData>(loginAction, null);
   

@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Singer } from "@/lib/models/SingerModel";
+import { Singer } from "@/lib/database/models/SingerModel";
 
 interface Song {
   songName: string;

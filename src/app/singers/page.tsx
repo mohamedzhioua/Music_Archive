@@ -5,7 +5,7 @@ import CustomButton from "@/components/ui/custom-button";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
-import { Singer } from "@/lib/models/SingerModel";
+import { Singer } from "@/lib/database/models/SingerModel";
 import { useRouter } from "next/navigation";
 
 const SingersListPage = () => {
