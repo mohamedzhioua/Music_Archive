@@ -10,6 +10,7 @@ async function dbConnect() {
 
     await mongoose.connect(MONGODB_URI);
   } catch (error) {
+    console.error("MongoDB connection error:", error);  
     throw new Error("Connection failed!");
   }
 }
