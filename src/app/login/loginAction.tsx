@@ -7,13 +7,13 @@ import bcrypt from "bcryptjs";
 import * as jose from "jose";
  import { connectToDatabase } from "@/lib/database";
 import UserModel from "@/lib/database/models/UserModel";
- 
+  
 
 export async function  loginAction(
-  prevState: { error: null | string },
+  state:any,
   formData: FormData
 ){
-   
+ 
     // Get the data off the form
     const name = formData.get("name") as string;
     const password = formData.get("password") as string;
