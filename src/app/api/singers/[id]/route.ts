@@ -6,8 +6,10 @@ import { connectToDatabase } from "@/lib/database";
  
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
-    // Connect to the database
-    await connectToDatabase();  // Check if the singer ID is provided
+  // Connect to the database
+    await connectToDatabase();  
+
+  // Check if the singer ID is provided
   if (!id) {
     return NextResponse.json({ error: "Invalid singer ID" }, { status: 400 });
   }

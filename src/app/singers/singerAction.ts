@@ -1,14 +1,14 @@
 "use server";
 
-import clientPromise from "@/lib/database/dbConnect";
- import SingerModel, { Singer } from "@/lib/database/models/SingerModel";
+import { connectToDatabase } from "@/lib/database";
+import SingerModel, { Singer } from "@/lib/database/models/SingerModel";
 interface SingerResult {
   singer?: Singer;
   error?: string;
 }
 export async function getSingerAction(id: string): Promise<SingerResult> {
   // Connect to the database
-  await clientPromise;
+  await connectToDatabase();  
 
 
   // Check if the singer ID is provided
