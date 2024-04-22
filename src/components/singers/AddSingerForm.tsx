@@ -324,7 +324,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                           format="HH:mm:ss"
                           value={
                             song?.duration
-                              ? dayjs(song?.lecture.out, "HHmmss")
+                              ? dayjs(song?.lecture.in, "HHmmss")
                               : undefined
                           }
                           onChange={(date) => {
