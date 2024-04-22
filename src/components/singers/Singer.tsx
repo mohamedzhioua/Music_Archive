@@ -1,5 +1,6 @@
 
 import { Singer } from "@/lib/database/models/SingerModel";
+import { formatTime } from "@/lib/utils/formatTime";
 import {
   Card,
   CardContent,
@@ -8,9 +9,7 @@ import {
   Divider,
 } from "@mui/material";
 import Link from "next/link";
-import dayjs from "dayjs";
-import { formatDuration } from "@/lib/utils/formatDuration";
-
+  
 const SingerInfo = ({ data }: { data: Singer }) => {
   return (
     <Card>
@@ -132,7 +131,7 @@ const SingerInfo = ({ data }: { data: Singer }) => {
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     - Durée :
                   </Typography>
-                  <Typography variant="h6">{ formatDuration(song.duration ) }</Typography>
+                  <Typography variant="h6">{ formatTime(song.duration ) }</Typography>
                 </Stack>
                 <Stack
                   style={{
@@ -156,7 +155,7 @@ const SingerInfo = ({ data }: { data: Singer }) => {
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     - In :
                   </Typography>
-                  <Typography variant="h6">{formatDuration(song.lecture.in)}</Typography>
+                  <Typography variant="h6">{formatTime(song.lecture.in)}</Typography>
                 </Stack>
                 <Stack
                   style={{
@@ -168,7 +167,7 @@ const SingerInfo = ({ data }: { data: Singer }) => {
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     - Out :
                   </Typography>
-                  <Typography variant="h6">{formatDuration(song.lecture.out)}</Typography>
+                  <Typography variant="h6">{formatTime(song.lecture.out)}</Typography>
                 </Stack>
               </Stack>
             ))}
