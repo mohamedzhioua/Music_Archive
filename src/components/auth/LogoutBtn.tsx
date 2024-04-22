@@ -1,6 +1,6 @@
 "use client";
-import { logout } from "@/app/login/loginAction";
-import CustomButton from "./custom-button";
+import { logout } from "@/lib/actions/loginAction";
+import CustomButton from "../shared/custom-button";
 import { useRouter } from "next/navigation";
 
 export const LogoutBtn = () => {

@@ -1,6 +1,5 @@
 import { Box, InputAdornment, TextField } from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import React from "react";
 
 interface TableSearchBarProps {
   query: string;

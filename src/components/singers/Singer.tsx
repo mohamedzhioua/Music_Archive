@@ -8,6 +8,8 @@ import {
   Divider,
 } from "@mui/material";
 import Link from "next/link";
+import dayjs from "dayjs";
+import { formatDuration } from "@/lib/utils/formatDuration";
 
 const SingerInfo = ({ data }: { data: Singer }) => {
   return (
@@ -128,9 +130,9 @@ const SingerInfo = ({ data }: { data: Singer }) => {
                   }}
                 >
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                    - Durée (en secondes):
+                    - Durée :
                   </Typography>
-                  <Typography variant="h6">{song.duration}</Typography>
+                  <Typography variant="h6">{ formatDuration(song.duration ) }</Typography>
                 </Stack>
                 <Stack
                   style={{
@@ -152,9 +154,9 @@ const SingerInfo = ({ data }: { data: Singer }) => {
                   }}
                 >
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                    - In (en secondes):
+                    - In :
                   </Typography>
-                  <Typography variant="h6">{song.lecture.in}</Typography>
+                  <Typography variant="h6">{formatDuration(song.lecture.in)}</Typography>
                 </Stack>
                 <Stack
                   style={{
@@ -164,9 +166,9 @@ const SingerInfo = ({ data }: { data: Singer }) => {
                   }}
                 >
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                    - Out (en secondes):
+                    - Out :
                   </Typography>
-                  <Typography variant="h6">{song.lecture.out}</Typography>
+                  <Typography variant="h6">{formatDuration(song.lecture.out)}</Typography>
                 </Stack>
               </Stack>
             ))}

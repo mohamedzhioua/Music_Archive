@@ -1,7 +1,7 @@
 "use client";
 
 import SingersListTable from "@/components/singers/SingersListTable";
-import CustomButton from "@/components/ui/custom-button";
+import CustomButton from "@/components/shared/custom-button";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";

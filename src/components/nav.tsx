@@ -2,7 +2,7 @@ import { AppBar,Toolbar } from "@mui/material";
 import Image from "next/image";
 import ThemeSwitch from "./theme-switch";
 import { cookies } from "next/headers";
-import { LogoutBtn } from "./ui/LogoutBtn";
+import { LogoutBtn } from "./auth/LogoutBtn";
   
 export default function Nav() {
 

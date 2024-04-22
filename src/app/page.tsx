@@ -1,5 +1,5 @@
 
-import Loginform from "@/components/login-form";
+import Loginform from "@/components/auth/login-form";
 import { Box, Paper, Typography } from "@mui/material";
  
 const LoginPage = () => {
@@ -34,7 +34,7 @@ const LoginPage = () => {
           align="center"
           marginBottom="40px"
         >
-          {`Gestionnaire d'Archive`}
+          {`Gestionnaire d'Archives`}
         </Typography>
         <Loginform/>
       </Paper>

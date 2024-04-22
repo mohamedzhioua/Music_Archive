@@ -28,7 +28,6 @@ export async function  loginAction(
 
     // Lookup the user
     const user = await UserModel.findOne({ name: name });      
-    console.log("🚀 ~ user:", user)
 
     // If user not found, return error
     if (!user) {

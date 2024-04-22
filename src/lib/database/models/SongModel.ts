@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 export type Song = {
   songName: string;
   releaseDate: Date;
-  duration: number;
-  cassetteNumber: number;
+  duration: string;
+  cassetteNumber: string;
   lecture: {
-    in: number;
-    out: number;
+    in: string;
+    out: string;
   };
 };
 
@@ -22,20 +22,20 @@ const songSchema = new mongoose.Schema(
       required: true,
     },
     duration: {
-      type: Number,
+      type: String,
       required: true,
     },
     cassetteNumber: {
-      type: Number,
+      type: String,
       required: true,
     },
     lecture: {
       in: {
-        type: Number,
+        type: String,
         required: true,
       },
       out: {
-        type: Number,
+        type: String,
         required: true,
       },
     },

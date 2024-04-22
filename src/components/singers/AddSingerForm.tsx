@@ -8,15 +8,19 @@ import {
   Unstable_Grid2 as Grid,
   Typography,
 } from "@mui/material";
-import CustomInput from "../ui/CustomInput";
-import CustomButton from "../ui/custom-button";
+import CustomInput from "../shared/CustomInput";
+import CustomButton from "../shared/custom-button";
 import { countries } from "@/lib/utils/countries";
 import { useState } from "react";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  DatePicker,
+  LocalizationProvider,
+  TimePicker,
+} from "@mui/x-date-pickers";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Singer } from "@/lib/database/models/SingerModel";
@@ -31,10 +35,8 @@ interface Song {
     out: string;
   };
 }
- 
 
 const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
- 
   const router = useRouter();
   const [stockReference, setStockReference] = useState<string>(
     initialData?.stockReference || ""
@@ -52,8 +54,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
       },
     ]
   );
-  
-
+ 
   const handleSongChange = (
     index: number,
     event: React.ChangeEvent<HTMLInputElement>
@@ -66,21 +67,20 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
       newSongs[index] = {
         ...newSongs[index],
         lecture: {
-          ...newSongs[index].lecture,
-          [name]: value
-        }
+          ...newSongs[index].lecture ,
+          [name]: value,
+        },
       };
     } else {
       // Update other song attributes
       newSongs[index] = {
         ...newSongs[index],
-        [name as keyof Song]: value
+        [name as keyof Song]: value,
       };
     }
     // Update state with the newSongs array
     setSongs(newSongs);
   };
-  
 
   const addSongField = () => {
     setSongs([
@@ -142,12 +142,13 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
     });
 
     router.push("/singers");
+ 
   };
 
   return (
     <Card>
       <CardContent>
-        <form onSubmit={handleFormSubmit} >
+        <form onSubmit={handleFormSubmit}>
           <Typography
             variant="h3"
             sx={{ fontWeight: "bold", marginLeft: "1rem" }}
@@ -164,7 +165,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                 type="text"
                 value={stockReference}
                 onChange={(event) => setStockReference(event.target.value)}
-               />
+              />
             </Grid>
             <Grid xs={12} md={4}>
               <CustomInput
@@ -183,7 +184,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                 value={country}
                 options={countries}
                 autoHighlight
-                onChange={(event, newValue:any) => {
+                onChange={(event, newValue: any) => {
                   setCountry(newValue);
                 }}
                 renderInput={(params: any) => (
@@ -195,7 +196,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                     variant="outlined"
                     name={"country"}
                     onChange={(event) => setCountry(event.target.value)}
-                   />
+                  />
                 )}
               />
             </Grid>
@@ -207,7 +208,6 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                 borderRadius: "8px",
               }}
             >
-              {" "}
               <Typography
                 variant="h5"
                 sx={{
@@ -231,7 +231,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                     <Grid xs={12} md={6}>
                       <CustomInput
                         required
-                         label="Nom de la chanson"
+                        label="Nom de la chanson"
                         type="text"
                         placeholder="Nom de la chanson"
                         value={song?.songName}
@@ -243,7 +243,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                         }
                         name="songName"
                         fullWidth
-                       />
+                      />
                     </Grid>
                     <Grid xs={12} md={6}>
                       <LocalizationProvider
@@ -271,26 +271,35 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                       </LocalizationProvider>
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <CustomInput
-                        required
-                        label="Durée (en secondes)"
-                        type="number"
-                        placeholder="Durée (en secondes)"
-                        value={song?.duration}
-                        onChange={(event) =>
-                          handleSongChange(
-                            index,
-                            event as React.ChangeEvent<HTMLInputElement>
-                          )
-                        }
-                        name="duration"
-                      />
+                      <LocalizationProvider
+                        key={index}
+                        dateAdapter={AdapterDayjs}
+                      >
+                        <TimePicker
+                          sx={{ width: "100%" }}
+                          ampm={false}
+                          label="Duration"
+                          format="HH:mm:ss"
+                          value={
+                            song?.duration
+                              ? dayjs(song?.duration, "HHmmss")
+                              : undefined
+                          }
+                          onChange={(date) => {
+                            if (date) {
+                              const newSongs = [...songs];
+                              newSongs[index].duration = date.format("HHmmss");
+                              setSongs(newSongs);
+                            }
+                          }}
+                        />
+                      </LocalizationProvider>
                     </Grid>
                     <Grid xs={12} md={6}>
                       <CustomInput
                         required
                         label="Numéro de cassette"
-                        type="number"
+                        type="text"
                         placeholder="Numéro de cassette"
                         value={song?.cassetteNumber}
                         onChange={(event) =>
@@ -303,36 +312,59 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                       />
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <CustomInput
-                        required
-                        label="in (en secondes)"
-                        type="number"
-                        placeholder="in (en secondes)"
-                        value={song?.lecture?.in}
-                        onChange={(event) =>
-                          handleSongChange(
-                            index,
-                            event as React.ChangeEvent<HTMLInputElement>
-                          )
-                        }
-                        name="in"
-                      />
+              
+                    <LocalizationProvider
+                        key={index}
+                        dateAdapter={AdapterDayjs}
+                      >
+                        <TimePicker
+                          sx={{ width: "100%" }}
+                          ampm={false}
+                          label="in"
+                          format="HH:mm:ss"
+                          value={
+                            song?.duration
+                              ? dayjs(song?.lecture.out, "HHmmss")
+                              : undefined
+                          }
+                          onChange={(date) => {
+                            if (date) {
+                              const newSongs = [...songs];
+                              newSongs[index].lecture.in  = date.format("HHmmss");
+ 
+                              setSongs(newSongs);
+                            }
+                          }}
+                        />
+                      </LocalizationProvider>
+                       
                     </Grid>
                     <Grid xs={12} md={6}>
-                      <CustomInput
-                        required
-                        label="out (en secondes)"
-                        type="number"
-                        placeholder="out (en secondes)"
-                        value={song?.lecture?.out}
-                        onChange={(event) =>
-                          handleSongChange(
-                            index,
-                            event as React.ChangeEvent<HTMLInputElement>
-                          )
-                        }
-                        name="out"
-                      />
+                    <LocalizationProvider
+                        key={index}
+                        dateAdapter={AdapterDayjs}
+                      >
+                        <TimePicker
+                          sx={{ width: "100%" }}
+                          ampm={false}
+                          label="out"
+                          format="HH:mm:ss"
+                          value={
+                            song?.duration
+                              ? dayjs(song?.lecture?.out, "HHmmss")
+                              : undefined
+                          }
+                          onChange={(date) => {
+                            if (date) {
+                              const newSongs = [...songs];
+                              newSongs[index].lecture.out  = date.format("HHmmss");
+ 
+                              setSongs(newSongs);
+                            }
+                          }}
+                        />
+                      </LocalizationProvider>
+                       
                     </Grid>
                   </Grid>
                   <CustomButton

@@ -9,17 +9,18 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import AlertModal from "../ui/AlertModal";
-import { Fragment, useEffect, useState } from "react";
-import { Scrollbar } from "../ui/Scrollbar";
-import toast from "react-hot-toast";
+ import { Fragment, useEffect, useState } from "react";
+ import toast from "react-hot-toast";
 import { simpleFilter } from "@/lib/utils/filters";
 import { pagination } from "@/lib/utils/paginations";
-import TableSearchBar from "../ui/TableSearchBar";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useRouter } from "next/navigation";
+import TableSearchBar from "../shared/TableSearchBar";
+import { Scrollbar } from "../shared/Scrollbar";
+import AlertModal from "../shared/AlertModal";
+
 const SingersListTable = (props: any) => {
   const { singers: initialSingers } = props;
   const [singers, setSingers] = useState([]);
@@ -80,6 +81,7 @@ const SingersListTable = (props: any) => {
       success: "Supprimé",
       error: "Erreur",
     });
+
   };
 
   const filteredSingers = simpleFilter(singers, query);
