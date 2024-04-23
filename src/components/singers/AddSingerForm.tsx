@@ -279,6 +279,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                           sx={{ width: "100%" }}
                           ampm={false}
                           label="Duration"
+                          views={["hours", "minutes", "seconds"]}
                           format="HH:mm:ss"
                           value={
                             song?.duration
@@ -321,6 +322,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                           sx={{ width: "100%" }}
                           ampm={false}
                           label="in"
+                          views={["hours", "minutes", "seconds"]}
                           format="HH:mm:ss"
                           value={
                             song?.duration
@@ -348,6 +350,7 @@ const AddSingerForm = ({ initialData }: { initialData: Singer | null }) => {
                           sx={{ width: "100%" }}
                           ampm={false}
                           label="out"
+                          views={["hours", "minutes", "seconds"]}
                           format="HH:mm:ss"
                           value={
                             song?.duration
