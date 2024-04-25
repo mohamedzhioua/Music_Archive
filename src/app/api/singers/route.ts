@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
 
     const body = await req.json();
+    console.log("🚀 ~ POST ~ body:", body)
 
     const { stockReference, name, country, songs } = body;
 
